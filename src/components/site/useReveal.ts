@@ -38,7 +38,7 @@ export function useActiveTone(defaultTone: string) {
         const best = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        const next = (best?.target as HTMLElement | undefined)?.dataset.tone;
+        const next = (best?.target as HTMLElement | undefined)?.dataset["tone"];
         if (next) setTone(next);
       },
       { threshold: [0.15, 0.4, 0.7], rootMargin: "-30% 0px -30% 0px" },
