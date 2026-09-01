@@ -77,16 +77,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Сонне Поле — преміальні ковдри та подушки з України" },
+      {
+        name: "description",
+        content:
+          "Ліквідація складу українського виробника: натуральні ковдри та подушки зі знижками до -55%.",
+      },
+      { name: "author", content: "Сонне Поле" },
+      { property: "og:title", content: "Сонне Поле — преміальний сон з України" },
+      {
+        property: "og:description",
+        content: "Натуральні ковдри та подушки зі знижками до -55%. Доставка Новою Поштою.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap",
+      },
       {
         rel: "stylesheet",
         href: appCss,
