@@ -1,8 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Truck, Wallet, RefreshCcw, Star, Flame, Layers, ShieldCheck } from "lucide-react";
+import {
+  Truck,
+  Wallet,
+  RefreshCcw,
+  Star,
+  Flame,
+  Layers,
+  ShieldCheck,
+  ShoppingBag,
+} from "lucide-react";
 
-import { OrderSheet, type OrderRequest } from "@/components/site/OrderSheet";
+import { OrderSheet, type CartItem } from "@/components/site/OrderSheet";
 import { ProductCard, type Product } from "@/components/site/ProductCard";
 import { useActiveTone, useReveal } from "@/components/site/useReveal";
 
