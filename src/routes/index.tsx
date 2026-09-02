@@ -200,7 +200,7 @@ function Index() {
           <a href="#top" className="font-display text-lg tracking-wide">
             СОННЕ ПОЛЕ
           </a>
-          <span className="hidden text-xs uppercase tracking-[0.2em] text-muted-foreground sm:block">
+          <span className="hidden text-sm uppercase tracking-[0.2em] text-muted-foreground sm:block">
             Український виробник
           </span>
           <span className="rounded-full border border-gold/60 px-3 py-1 text-[0.65rem] uppercase tracking-[0.16em] text-gold">
@@ -214,7 +214,7 @@ function Index() {
         <div ref={hero.ref} className={`mx-auto max-w-5xl reveal ${hero.shown ? "reveal-in" : ""}`}>
           <div className="grid items-center gap-8 lg:grid-cols-[1.05fr_1fr]">
             <div>
-              <span className="inline-flex items-center gap-2 rounded-full border border-hairline bg-card px-4 py-2 text-[0.68rem] uppercase tracking-[0.2em] backdrop-blur-md">
+              <span className="inline-flex items-center gap-2 rounded-full border border-hairline bg-card px-4 py-2 text-sm uppercase tracking-[0.2em] backdrop-blur-md">
                 <Flame className="h-3.5 w-3.5 text-terracotta" />
                 Акція обмежена · {timer}
               </span>
@@ -231,7 +231,7 @@ function Index() {
               >
                 Обрати свій комфорт
               </a>
-              <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs uppercase tracking-[0.16em] text-muted-foreground">
+              <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm uppercase tracking-[0.16em] text-muted-foreground">
                 <span>Натуральні наповнювачі</span>
                 <span>Пошито в Україні</span>
                 <span>Післяплата</span>
@@ -339,7 +339,7 @@ function Index() {
                     ))}
                   </div>
                   <blockquote className="mt-4 text-lg leading-relaxed">{r.text}</blockquote>
-                  <figcaption className="mt-4 text-xs uppercase tracking-[0.16em] text-muted-foreground">
+                  <figcaption className="mt-4 text-sm uppercase tracking-[0.16em] text-muted-foreground">
                     {r.name}
                   </figcaption>
                 </figure>
@@ -355,7 +355,7 @@ function Index() {
           <p className="font-display text-2xl leading-snug sm:text-3xl">
             Теплі ковдри та подушки нового покоління. Вироблено з гордістю в Україні.
           </p>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs uppercase tracking-[0.18em] text-muted-foreground">
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm uppercase tracking-[0.18em] text-muted-foreground">
             <span className="inline-flex items-center gap-2">
               <ShieldCheck className="h-4 w-4" /> Гарантія якості
             </span>
