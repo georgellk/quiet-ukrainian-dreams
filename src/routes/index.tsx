@@ -260,7 +260,7 @@ function Index() {
         <div className="mx-auto max-w-5xl">
           <p className="eyebrow">Категорія A</p>
           <h2 className="mt-2 text-3xl sm:text-5xl">Преміальні ковдри</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+          <p className="mt-3 max-w-2xl text-lg leading-relaxed text-muted-foreground">
             Чотири наповнювачі — чотири характери сну. Прокручуйте, щоб відчути кожен матеріал.
           </p>
         </div>
@@ -279,7 +279,7 @@ function Index() {
         <div className="mx-auto max-w-5xl">
           <p className="eyebrow">Категорія B</p>
           <h2 className="mt-2 text-3xl sm:text-5xl">Подушки для комфорту</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+          <p className="mt-3 max-w-2xl text-lg leading-relaxed text-muted-foreground">
             Набори по дві подушки. Гортайте на телефоні, порівнюйте на великому екрані.
           </p>
         </div>
@@ -313,10 +313,10 @@ function Index() {
               { icon: Wallet, t: "Оплата при отриманні", s: "Післяплата без передоплати" },
               { icon: RefreshCcw, t: "14 днів на обмін", s: "Та повернення без питань" },
             ].map(({ icon: Icon, t, s }) => (
-              <div key={t} className="glass-card rounded-3xl p-5">
+              <div key={t} className="glass-card pattern-diamond rounded-3xl p-5">
                 <Icon className="h-5 w-5 text-gold" />
                 <p className="mt-3 font-display text-xl leading-snug">{t}</p>
-                <p className="mt-1 text-sm text-muted-foreground">{s}</p>
+                <p className="mt-1 text-lg text-muted-foreground">{s}</p>
               </div>
             ))}
           </div>
@@ -338,7 +338,7 @@ function Index() {
                       />
                     ))}
                   </div>
-                  <blockquote className="mt-4 text-sm leading-relaxed">{r.text}</blockquote>
+                  <blockquote className="mt-4 text-lg leading-relaxed">{r.text}</blockquote>
                   <figcaption className="mt-4 text-xs uppercase tracking-[0.16em] text-muted-foreground">
                     {r.name}
                   </figcaption>
