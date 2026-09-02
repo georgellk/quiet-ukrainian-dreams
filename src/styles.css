@@ -80,7 +80,7 @@
   --secondary: oklch(0.945 0.014 82);
   --secondary-foreground: oklch(0.24 0.014 60);
   --muted: oklch(0.945 0.014 82);
-  --muted-foreground: oklch(0.52 0.016 60);
+  --muted-foreground: oklch(0.42 0.016 60);
   --accent: oklch(0.93 0.03 70);
   --accent-foreground: oklch(0.24 0.014 60);
   --destructive: oklch(0.53 0.16 28);
@@ -114,6 +114,8 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    font-size: 1.075rem;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -134,6 +136,43 @@
 /* Dynamic scroll background */
 @utility tone-canvas {
   transition: background-color 0.6s ease;
+}
+
+/* Decorative textile patterns (subtle, print-like) */
+@utility pattern-weave {
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      color-mix(in oklab, var(--ink) 5%, transparent) 0 1px,
+      transparent 1px 9px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      color-mix(in oklab, var(--ink) 5%, transparent) 0 1px,
+      transparent 1px 9px
+    );
+}
+
+@utility pattern-diamond {
+  background-image:
+    repeating-linear-gradient(
+      60deg,
+      color-mix(in oklab, var(--gold) 16%, transparent) 0 1px,
+      transparent 1px 16px
+    ),
+    repeating-linear-gradient(
+      -60deg,
+      color-mix(in oklab, var(--gold) 16%, transparent) 0 1px,
+      transparent 1px 16px
+    );
+}
+
+@utility pattern-dots {
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--ink) 12%, transparent) 1.2px,
+    transparent 1.2px
+  );
+  background-size: 14px 14px;
 }
 
 /* Glassmorphism card with subtle inner border */

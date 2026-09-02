@@ -1,7 +1,6 @@
-import { useState } from "react";
-import { Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Sparkles, Plus, Check } from "lucide-react";
 import { useReveal } from "./useReveal";
-import type { OrderRequest } from "./OrderSheet";
 
 export type Product = {
   id: string;
@@ -18,14 +17,21 @@ export type Product = {
 
 export function ProductCard({
   product,
-  onOrder,
+  onAdd,
 }: {
   product: Product;
-  onOrder: (req: OrderRequest) => void;
+  onAdd: (item: { product: string; size: string; price: number }) => void;
 }) {
   const [size, setSize] = useState(product.sizes[1] ?? product.sizes[0]!);
+  const [added, setAdded] = useState(false);
   const { ref, shown } = useReveal<HTMLElement>();
   const discount = Math.round((1 - product.price / product.oldPrice) * 100);
+
+  useEffect(() => {
+    if (!added) return;
+    const t = setTimeout(() => setAdded(false), 1800);
+    return () => clearTimeout(t);
+  }, [added]);
 
   return (
     <article
@@ -43,37 +49,37 @@ export function ProductCard({
           height={1024}
           className="h-full w-full object-cover"
         />
-        <span className="absolute left-4 top-4 rounded-full bg-ink/85 px-3 py-1 text-[0.65rem] font-medium uppercase tracking-[0.18em] text-ink-foreground backdrop-blur-sm">
+        <span className="absolute left-4 top-4 rounded-full bg-ink/85 px-3.5 py-1.5 text-sm font-medium uppercase tracking-[0.14em] text-ink-foreground backdrop-blur-sm">
           −{discount}%
         </span>
         {product.badge ? (
-          <span className="absolute right-4 top-4 inline-flex items-center gap-1 rounded-full bg-gold/95 px-3 py-1 text-[0.65rem] font-medium uppercase tracking-[0.16em] text-ink">
-            <Sparkles className="h-3 w-3" />
+          <span className="absolute right-4 top-4 inline-flex items-center gap-1 rounded-full bg-gold/95 px-3.5 py-1.5 text-sm font-medium uppercase tracking-[0.12em] text-ink">
+            <Sparkles className="h-3.5 w-3.5" />
             {product.badge}
           </span>
         ) : null}
       </div>
 
-      <div className="p-5 sm:p-6">
+      <div className="pattern-weave p-5 sm:p-6">
         <p className="eyebrow">{product.tagline}</p>
-        <h3 className="mt-2 text-2xl leading-tight sm:text-[1.7rem]">{product.name}</h3>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{product.description}</p>
+        <h3 className="mt-2 text-[1.75rem] leading-tight sm:text-3xl">{product.name}</h3>
+        <p className="mt-3 text-lg leading-relaxed text-muted-foreground">{product.description}</p>
 
         <div className="mt-5 flex items-end gap-3">
-          <span className="font-display text-3xl leading-none">{product.price} ₴</span>
-          <span className="pb-0.5 text-base text-muted-foreground line-through decoration-terracotta/70">
+          <span className="font-display text-4xl leading-none">{product.price} ₴</span>
+          <span className="pb-1 text-lg text-muted-foreground line-through decoration-terracotta/70">
             {product.oldPrice} ₴
           </span>
         </div>
 
-        <p className="mt-5 text-xs uppercase tracking-[0.18em] text-muted-foreground">Розмір</p>
+        <p className="mt-5 text-sm uppercase tracking-[0.16em] text-muted-foreground">Розмір</p>
         <div className="mt-2 grid grid-cols-3 gap-2">
           {product.sizes.map((s) => (
             <button
               key={s}
               onClick={() => setSize(s)}
               aria-pressed={size === s}
-              className={`h-12 rounded-2xl border text-sm transition-all active:scale-[0.97] ${
+              className={`h-14 rounded-2xl border-2 text-base transition-all active:scale-[0.97] ${
                 size === s
                   ? "border-ink bg-ink text-ink-foreground"
                   : "border-hairline bg-background/60 text-foreground hover:border-gold"
@@ -85,12 +91,23 @@ export function ProductCard({
         </div>
 
         <button
-          onClick={() =>
-            onOrder({ product: product.name, size, price: `${product.price} ₴` })
-          }
-          className="mt-4 h-14 w-full rounded-2xl bg-ink text-base font-medium tracking-wide text-ink-foreground transition-transform active:scale-[0.98]"
+          onClick={() => {
+            onAdd({ product: product.name, size, price: product.price });
+            setAdded(true);
+          }}
+          className={`mt-4 flex h-16 w-full items-center justify-center gap-2 rounded-2xl text-lg font-medium tracking-wide transition-all active:scale-[0.98] ${
+            added ? "bg-gold text-ink" : "bg-ink text-ink-foreground"
+          }`}
         >
-          Замовити зі знижкою
+          {added ? (
+            <>
+              <Check className="h-5 w-5" /> Додано в кошик
+            </>
+          ) : (
+            <>
+              <Plus className="h-5 w-5" /> Додати в кошик
+            </>
+          )}
         </button>
       </div>
     </article>

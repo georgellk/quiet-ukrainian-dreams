@@ -1,8 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Truck, Wallet, RefreshCcw, Star, Flame, Layers, ShieldCheck } from "lucide-react";
+import {
+  Truck,
+  Wallet,
+  RefreshCcw,
+  Star,
+  Flame,
+  Layers,
+  ShieldCheck,
+  ShoppingBag,
+} from "lucide-react";
 
-import { OrderSheet, type OrderRequest } from "@/components/site/OrderSheet";
+import { OrderSheet, type CartItem } from "@/components/site/OrderSheet";
 import { ProductCard, type Product } from "@/components/site/ProductCard";
 import { useActiveTone, useReveal } from "@/components/site/useReveal";
 
@@ -160,11 +169,16 @@ function useCountdown(hours = 47) {
 }
 
 function Index() {
-  const [request, setRequest] = useState<OrderRequest | null>(null);
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const tone = useActiveTone("ivory");
   const timer = useCountdown();
   const hero = useReveal<HTMLDivElement>();
   const trust = useReveal<HTMLDivElement>();
+
+  const addToCart = (item: { product: string; size: string; price: number }) =>
+    setCart((c) => [...c, { ...item, uid: `${Date.now()}-${Math.random()}` }]);
+  const removeFromCart = (uid: string) => setCart((c) => c.filter((i) => i.uid !== uid));
 
   const toneMap: Record<string, string> = {
     ivory: "var(--tone-ivory)",
@@ -186,7 +200,7 @@ function Index() {
           <a href="#top" className="font-display text-lg tracking-wide">
             СОННЕ ПОЛЕ
           </a>
-          <span className="hidden text-xs uppercase tracking-[0.2em] text-muted-foreground sm:block">
+          <span className="hidden text-sm uppercase tracking-[0.2em] text-muted-foreground sm:block">
             Український виробник
           </span>
           <span className="rounded-full border border-gold/60 px-3 py-1 text-[0.65rem] uppercase tracking-[0.16em] text-gold">
@@ -200,7 +214,7 @@ function Index() {
         <div ref={hero.ref} className={`mx-auto max-w-5xl reveal ${hero.shown ? "reveal-in" : ""}`}>
           <div className="grid items-center gap-8 lg:grid-cols-[1.05fr_1fr]">
             <div>
-              <span className="inline-flex items-center gap-2 rounded-full border border-hairline bg-card px-4 py-2 text-[0.68rem] uppercase tracking-[0.2em] backdrop-blur-md">
+              <span className="inline-flex items-center gap-2 rounded-full border border-hairline bg-card px-4 py-2 text-sm uppercase tracking-[0.2em] backdrop-blur-md">
                 <Flame className="h-3.5 w-3.5 text-terracotta" />
                 Акція обмежена · {timer}
               </span>
@@ -217,7 +231,7 @@ function Index() {
               >
                 Обрати свій комфорт
               </a>
-              <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs uppercase tracking-[0.16em] text-muted-foreground">
+              <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm uppercase tracking-[0.16em] text-muted-foreground">
                 <span>Натуральні наповнювачі</span>
                 <span>Пошито в Україні</span>
                 <span>Післяплата</span>
@@ -246,7 +260,7 @@ function Index() {
         <div className="mx-auto max-w-5xl">
           <p className="eyebrow">Категорія A</p>
           <h2 className="mt-2 text-3xl sm:text-5xl">Преміальні ковдри</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+          <p className="mt-3 max-w-2xl text-lg leading-relaxed text-muted-foreground">
             Чотири наповнювачі — чотири характери сну. Прокручуйте, щоб відчути кожен матеріал.
           </p>
         </div>
@@ -254,7 +268,7 @@ function Index() {
         <div className="mx-auto mt-8 max-w-5xl space-y-10">
           {blankets.map((b) => (
             <div key={b.id} data-tone={b.tone}>
-              <ProductCard product={b} onOrder={setRequest} />
+              <ProductCard product={b} onAdd={addToCart} />
             </div>
           ))}
         </div>
@@ -265,7 +279,7 @@ function Index() {
         <div className="mx-auto max-w-5xl">
           <p className="eyebrow">Категорія B</p>
           <h2 className="mt-2 text-3xl sm:text-5xl">Подушки для комфорту</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+          <p className="mt-3 max-w-2xl text-lg leading-relaxed text-muted-foreground">
             Набори по дві подушки. Гортайте на телефоні, порівнюйте на великому екрані.
           </p>
         </div>
@@ -274,7 +288,7 @@ function Index() {
         <div className="no-scrollbar mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-2 sm:hidden">
           {pillows.map((p) => (
             <div key={p.id} className="w-[85vw] shrink-0 snap-center">
-              <ProductCard product={p} onOrder={setRequest} />
+              <ProductCard product={p} onAdd={addToCart} />
             </div>
           ))}
         </div>
@@ -282,7 +296,7 @@ function Index() {
         {/* Desktop: 2-column grid */}
         <div className="mx-auto mt-8 hidden max-w-5xl grid-cols-2 gap-6 sm:grid">
           {pillows.map((p) => (
-            <ProductCard key={p.id} product={p} onOrder={setRequest} />
+            <ProductCard key={p.id} product={p} onAdd={addToCart} />
           ))}
         </div>
       </section>
@@ -299,10 +313,10 @@ function Index() {
               { icon: Wallet, t: "Оплата при отриманні", s: "Післяплата без передоплати" },
               { icon: RefreshCcw, t: "14 днів на обмін", s: "Та повернення без питань" },
             ].map(({ icon: Icon, t, s }) => (
-              <div key={t} className="glass-card rounded-3xl p-5">
+              <div key={t} className="glass-card pattern-diamond rounded-3xl p-5">
                 <Icon className="h-5 w-5 text-gold" />
                 <p className="mt-3 font-display text-xl leading-snug">{t}</p>
-                <p className="mt-1 text-sm text-muted-foreground">{s}</p>
+                <p className="mt-1 text-lg text-muted-foreground">{s}</p>
               </div>
             ))}
           </div>
@@ -324,8 +338,8 @@ function Index() {
                       />
                     ))}
                   </div>
-                  <blockquote className="mt-4 text-sm leading-relaxed">{r.text}</blockquote>
-                  <figcaption className="mt-4 text-xs uppercase tracking-[0.16em] text-muted-foreground">
+                  <blockquote className="mt-4 text-lg leading-relaxed">{r.text}</blockquote>
+                  <figcaption className="mt-4 text-sm uppercase tracking-[0.16em] text-muted-foreground">
                     {r.name}
                   </figcaption>
                 </figure>
@@ -341,7 +355,7 @@ function Index() {
           <p className="font-display text-2xl leading-snug sm:text-3xl">
             Теплі ковдри та подушки нового покоління. Вироблено з гордістю в Україні.
           </p>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs uppercase tracking-[0.18em] text-muted-foreground">
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm uppercase tracking-[0.18em] text-muted-foreground">
             <span className="inline-flex items-center gap-2">
               <ShieldCheck className="h-4 w-4" /> Гарантія якості
             </span>
@@ -356,32 +370,41 @@ function Index() {
       </footer>
 
       {/* Floating bottom nav */}
-      <nav className="fixed bottom-4 left-1/2 z-40 w-[min(92%,26rem)] -translate-x-1/2">
-        <div className="glass-card flex items-center justify-between gap-2 rounded-full p-1.5">
+      <nav className="fixed bottom-4 left-1/2 z-40 w-[min(94%,28rem)] -translate-x-1/2">
+        <div className="glass-card flex items-center justify-between gap-2 rounded-full p-2">
           <a
             href="#catalog"
-            className="flex-1 rounded-full px-4 py-3 text-center text-sm font-medium"
+            className="flex-1 rounded-full px-3 py-3.5 text-center text-base font-medium"
           >
             Ковдри
           </a>
           <a
             href="#pillows"
-            className="flex-1 rounded-full px-4 py-3 text-center text-sm font-medium"
+            className="flex-1 rounded-full px-3 py-3.5 text-center text-base font-medium"
           >
             Подушки
           </a>
           <button
-            onClick={() =>
-              setRequest({ product: "Консультація менеджера", size: "уточнимо", price: "−55%" })
-            }
-            className="flex-1 rounded-full bg-ink px-4 py-3 text-center text-sm font-medium text-ink-foreground"
+            onClick={() => setSheetOpen(true)}
+            className="relative flex flex-1 items-center justify-center gap-2 rounded-full bg-ink px-3 py-3.5 text-base font-medium text-ink-foreground"
           >
-            Замовити
+            <ShoppingBag className="h-5 w-5" />
+            Кошик
+            {cart.length > 0 ? (
+              <span className="absolute -right-1 -top-1 grid h-7 w-7 place-items-center rounded-full bg-gold text-sm font-semibold text-ink">
+                {cart.length}
+              </span>
+            ) : null}
           </button>
         </div>
       </nav>
 
-      <OrderSheet request={request} onClose={() => setRequest(null)} />
+      <OrderSheet
+        open={sheetOpen}
+        items={cart}
+        onRemove={removeFromCart}
+        onClose={() => setSheetOpen(false)}
+      />
     </div>
   );
 }
